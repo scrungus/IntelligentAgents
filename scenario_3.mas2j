@@ -1,0 +1,14 @@
+MAS ia_submission {
+
+	infrastructure: 
+		Centralised
+
+	environment:
+		rover.RoverWorld("mas2j_file=scenario_3.mas2j", "scenario_id=graded-scenario-3")
+	
+	agents:
+		blank [ capacity =3, scan_range=3, mindinspector="gui(cycle,html,history)"];
+
+	aslSourcePath:
+		"src/asl";
+}
