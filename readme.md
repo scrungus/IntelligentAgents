@@ -242,7 +242,7 @@ __*y_left*__: Distance from destination along the y-axis.
 Apart from the actions listed above, an Agent may extend its capability via internal actions.
 Some internal actions have been provided for you such as;
 
-#### <a name="gre"></a>*get\_energy*: 
+#### <a name="gre"></a>*check\_status*: 
 - usage:  __*rover.ia.check\_status(X)*__
 
 This would store the Agent's current energy of type double in the variable X. 
@@ -256,6 +256,7 @@ __<a name="pia"></a>NOTE__: For this coursework, you are limited to create inter
 - __*get_distance_from_base*__: Retrieves the location of the base.
        `usage: rover.ia.get_distance_from_base(Xdist,Ydist)`
        For `get_base_location` to work, all movements performed by an agent needs to be logged using the `log_movement` internal action.
+       Note: this is not optimised and you will have to either implement yours or optimise the output you've gotten from this. 
 - __*get_config*__: Retrieves the agent's configuration (capacity,  scan range and preferred resource type)
         `usage: rover.ia.check_config(Capacity,Scanrange,Resourcetype)`
 - __*get_map_size*__: Retrieves the map's size as (Width, Height)
