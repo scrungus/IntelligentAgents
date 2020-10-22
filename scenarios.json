@@ -176,7 +176,7 @@
       "id": "graded-scenario-5",
       "dynamic_setup": true,
       "agents_count": 6,
-      "energy": "very_high",
+      "energy": "low",
       "grid": "large",
       "obstacles": "medium",
       "resource_density": "sparse",
