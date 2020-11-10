@@ -56,8 +56,8 @@
         "adjustments": {
           "collect": 1,
           "deposit": 1,
-          "move": 1,
-          "scan": 1
+          "move": 0.85,
+          "scan": 0.85
         },
         "baseline": {
           "collect": 10,
@@ -99,8 +99,8 @@
         "adjustments": {
           "collect": 1,
           "deposit": 1,
-          "move": 1,
-          "scan": 1
+          "move": 0.68,
+          "scan": 0.68
         },
         "baseline": {
           "collect": 10,
@@ -142,8 +142,8 @@
         "adjustments": {
           "collect": 1,
           "deposit": 1,
-          "move": 1,
-          "scan": 1
+          "move": 0.42,
+          "scan": 0.42
         },
         "baseline": {
           "collect": 10,
@@ -151,7 +151,7 @@
           "move": 10,
           "scan": 15
         },
-        "band": "very_high",
+        "band": "extremely_high",
         "idle_cost": 10
       },
       "grid": {
@@ -161,7 +161,7 @@
         "wrap": true
       },
       "obstacles": {
-        "band": "none",
+        "band": "sparse",
         "placement": []
       },
       "resources": {
