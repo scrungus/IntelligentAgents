@@ -99,8 +99,8 @@
         "adjustments": {
           "collect": 1,
           "deposit": 1,
-          "move": 0.68,
-          "scan": 0.68
+          "move": 0.65,
+          "scan": 0.65
         },
         "baseline": {
           "collect": 10,
