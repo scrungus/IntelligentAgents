@@ -143,7 +143,7 @@ Below are the syntax for the above stated actions;
 ### <a name="act_feed"></a> Action Feedback
 
 #### <a name="a_act_feed"></a> All actions
-Performing any of the allowed actions (`scan`, `move`, `collect` and `deposit`) may result in any of the following feedback
+Performing any of the allowed actions (`move`, `collect` and `deposit`) may result in any of the following feedback
 
 ##### <a name="a_c_feed"></a> 1. action completed feedback:
 When an Agent successfully performs an action, a feedback is returned to inform it of the success.
