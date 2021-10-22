@@ -1,7 +1,8 @@
 
 # Rover CourseWork
 
-Template project for the Intelligent Agents (CM30174/50206) Rover CourseWork (2020/21 session).
+__GRADED SCENARIOS  FILES WILL BE MADE AVAILABLE AT 12 NOON__
+Template project for the Intelligent Agents (CM30174/50206) Rover CourseWork (2021/22 session).
 __`It is important that you read the entire page`__
 
 
@@ -264,7 +265,8 @@ __<a name="pia"></a>NOTE__: For this coursework, you are limited to create inter
 
 
 ### <a name="making_maps"></a>Making your own map
-While debugging, you may choose to create a custom map. The file `making_maps.md` gives you an idea of how this may be done.
+Custom maps allow you to test your agents' performance under certain conditions. To create custom maps, use the browser based tool available [here](https://github.bath.ac.uk/Intelligent-Agents/rover-world-map-builder). 
+
 
 
 
