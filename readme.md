@@ -1,7 +1,6 @@
 
 # Rover CourseWork
 
-__GRADED SCENARIOS  FILES WILL BE MADE AVAILABLE AT 12 NOON__
 Template project for the Intelligent Agents (CM30174/50206) Rover CourseWork (2021/22 session).
 __`It is important that you read the entire page`__
 
