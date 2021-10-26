@@ -5,16 +5,16 @@
     "can_scan_diamond": true,
     "can_scan_gold": true,
     "can_scan_obstacle": true,
-    "energy": "1000",
-    "max_agent_count": 2
+    "energy": "2000",
+    "max_agent_count": 8
   },
   "artefacts": {
     "dynamic":  {
       "enforce": true,
-      "rs_count": 5,
-      "rs_density": 2,
-      "rs_type": ["Gold"],
-      "ob_density": "none"
+      "rs_count": 2,
+      "rs_density": 12,
+      "rs_type": ["Gold", "Diamond"],
+      "ob_density": "very_sparse"
     }
   },
   "costing": {
@@ -32,7 +32,7 @@
     "configurable_points": 6,
     "fullscreen": false,
     "maze": false,
-    "size": 10,
+    "size": 40,
     "wrap": true
   }
 }

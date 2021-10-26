@@ -31,8 +31,8 @@ MAS ia_submission {
 				
 		*/
 		rover.RoverWorld(
-			"mas2j_file=intro_scenario.mas2j", 
-			"scenario_file=intro_scenario.json",
+			"mas2j_file=scenario6.mas2j", 
+			"scenario_file=scenarios/6/map6_dynamic.json",
 			"discovery_type=none")
 	
 	agents:
@@ -55,7 +55,10 @@ MAS ia_submission {
 				them in advanced scenarios.
 		*/
 	
-		blank [ capacity =3, scan_range=3,group=1, mindinspector="gui(cycle,html,history)"];
+		
+		/**** ADD YOUR AGENT(S) HERE *****/
+		blank [ capacity =3, scan_range=3, group=1, mindinspector="gui(cycle,html,history)"];
+		
 	aslSourcePath:
 		"src/asl";
 }
