@@ -13,6 +13,7 @@ public class agent_init extends DefaultInternalAction {
         // execute the internal action
         ts.getAg().getLogger().info("executing internal action 'mapping.agent_init'");
         Map.newAgent(ts.getAg());
+        ts.getAg().getLogger().info("Agent created with ID "+Map.getAgentID(ts.getAg())+" and location ("+Map.getAgentLoc(ts.getAg()).getX()+","+Map.getAgentLoc(ts.getAg()).getY()+")");
         // everything ok, so returns true
         return true;
     }

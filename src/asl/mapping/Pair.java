@@ -20,4 +20,15 @@ public class Pair {
 	public static Pair add(Pair p, Pair q) {
 		return new Pair(p.x+q.x,p.y+q.y);
 	}
+	
+	public static int getDistance(Pair p, Pair q) {
+		return Math.abs((p.x-q.x)+(p.y-q.y));
+	}
+	
+	public static boolean equals(Pair p, Pair q) {
+		if((p.getX() == q.getX()) && (p.getY() == q.getY())) {
+			return true;
+		}
+		return false;
+	}
 }
