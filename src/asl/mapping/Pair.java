@@ -21,8 +21,12 @@ public class Pair {
 		return new Pair(p.x+q.x,p.y+q.y);
 	}
 	
-	public static int getDistance(Pair p, Pair q) {
+	public static int getDistanceBetween(Pair p, Pair q) {
 		return Math.abs((p.x-q.x)+(p.y-q.y));
+	}
+	
+	public static int getSize(Pair p) {
+		return Math.abs(p.x)+Math.abs(p.y);
 	}
 	
 	public static boolean equals(Pair p, Pair q) {

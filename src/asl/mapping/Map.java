@@ -107,7 +107,7 @@ public class Map {
 		MapEntry nearest = new MapEntry(new Pair(100,100), 'n');
 		for (MapEntry loc : map) {
 			if(loc.getContent() == 'g' && loc.getQty() > 0) {
-				if(Pair.getDistance(loc.getLoc(), a) < Pair.getDistance(nearest.getLoc(), a)) {
+				if(Pair.getDistanceBetween(loc.getLoc(), a) < Pair.getDistanceBetween(nearest.getLoc(), a)) {
 					nearest = loc;
 				}
 			}
@@ -116,7 +116,15 @@ public class Map {
 	}
 	
 	public static Pair findPath(Pair start, Pair end) {
-		return new Pair(end.getX()-start.getX(),end.getY()-start.getY());
+		
+		Pair patha = new Pair(end.getX()-start.getX(),end.getY()-start.getY());
+		
+		Pair pathb = new Pair(-start.getX() - (width-end.getX()), -start.getY() - (height-end.getY()));
+		
+		if(Pair.getSize(patha)<Pair.getSize(pathb)) {
+			return patha;
+		}
+		return pathb;
 	}
 	
 	public static void updateResource(Pair res_loc, int qty) {

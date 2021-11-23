@@ -34,11 +34,26 @@
       	-pickup;
       	!explore;
       }
-   	  else{
-   	  	.print("randomly exploring");
-   	  	+exploring
+   	  elif(explore0){
+   	  	-explore0;
+   	  	.print("randomly exploring 1");
+   	  	+exploring;
+   	  	+explore1;
    	  	move(2,1);
    	  	mapping.log(2,1);
+   	  	-exploring
+      	scan(3);
+      	!explore;
+   	  }
+   	  else{
+   	  	if(explore1){
+   	  		-explore1;
+   	  	}
+   	  	+explore0;
+   	  	.print("randomly exploring 2");
+   	  	+exploring;
+   	  	move(1,2);
+   	  	mapping.log(1,2);
    	  	-exploring
       	scan(3);
       	!explore;
@@ -61,7 +76,7 @@
       	mapping.update_resource(0);
       	!dropoff0(Qty);
       }
-      elif(Qty > Capacity){
+     elif(Qty > Capacity){
       	.print("collecting");
       	for ( .range(I,1,Capacity) ) {
       		collect("gold");
@@ -101,7 +116,8 @@
  
 -!dropoff1(Qty,Capacity) : true 
 	<- !dropoff1(Qty,Capacity).
-    
+   
+
 + resource_found(RsType, Qty, XDist, YDist) : true
 	<-	.print("RESOURCE FOUND");
 	mapping.new_resource(XDist,YDist,"g",Qty);
@@ -117,32 +133,6 @@
 -! deposit0(Qty) : true
 	<-.print("deposit failed");.
 
-/* 	  
-+!recover(Xt,Yt,Xl,Yl,Qty): true
-	<- .print("recovering");
-	-obstructed(Xt,Yt,Xl,Yl)[source(percept)];
-	+move_resource(Qty);
-	move(Xl,Yl);
-	mapping.log(Xl,Yl);
-	rover.ia.check_config(Capacity,Scanrange,Resourcetype);
-	mapping.new_resource("g",Qty);
-	mapping.get_base(X,Y);
-	.print("new resource ",-X," ",-Y);
-	+busy;
-	-move_resource(Qty);
-	!pickup;
-	.print("pickupdropoff finished")
-	.print("exploring")
-    !explore;.
-    
-+ obstructed(Xt,Yt,Xl,Yl) : move_resource(Qty)
-	<- .print("obstructed r");
-	-move_resource(Qty);
-	mapping.log(Xt,Yt);
-	!recover(Xt,Yt,Xl,Yl,Qty); 
-	.
-*/
-
 +!wait : true
 	<- -obstructed(Xt,Yt,Xl,Yl)[source(percept)];
 		.wait(1000);
@@ -151,20 +141,20 @@
 +obstructed(Xt,Yt,Xl,Yl) : exploring
 	<- .print("explore failed");
 		-exploring;
-		mapping.log(Yt,Yt);
+		mapping.log(Xt,Yt);
 		!wait.
 
 +obstructed(Xt,Yt,Xl,Yl) : dropoff0
 	<- .print("dropoff failed");
 		-dropoff0(Qty);
-		mapping.log(Yt,Yt);
+		mapping.log(Xt,Yt);
 		!wait;
 		.
 	
 +obstructed(Xt,Yt,Xl,Yl) : dropoff1
 	<- .print("dropoff failed");
 		-dropoff1(Qty,Capacity); 
-		mapping.log(Yt,Yt);
+		mapping.log(Xt,Yt);
 		!wait;
 		.			
 
