@@ -8,16 +8,19 @@ import jason.*;
 import jason.asSemantics.*;
 import jason.asSyntax.*;
 
-public class update_resource extends DefaultInternalAction {
+public class update_resource_atx extends DefaultInternalAction {
 
     @Override
     public Object execute(TransitionSystem ts, Unifier un, Term[] args) throws Exception {
         // execute the internal action
-        ts.getAg().getLogger().info("executing internal action 'mapping.update_resource'");
+        ts.getAg().getLogger().info("executing internal action 'mapping.update_resource_atx'");
         
-        int q = (int)((NumberTerm)args[0]).solve();
+        int x = (int)((NumberTerm)args[0]).solve();
+        int y = (int)((NumberTerm)args[1]).solve();
+        int q = (int)((NumberTerm)args[2]).solve();
         
-        Map.updateResource(Map.getAgentLoc(ts.getAg()),q);
+        Pair loc = new Pair(x,y);
+        Map.updateResource(loc,q);
 
         List<MapEntry> resources = Map.getResources();
         
@@ -26,5 +29,6 @@ public class update_resource extends DefaultInternalAction {
         }
         // everything ok, so returns true
         return true;
+
     }
 }

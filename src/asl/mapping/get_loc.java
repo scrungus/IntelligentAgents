@@ -6,13 +6,17 @@ import jason.*;
 import jason.asSemantics.*;
 import jason.asSyntax.*;
 
-public class get_base extends DefaultInternalAction {
+public class get_loc extends DefaultInternalAction {
 
     @Override
     public Object execute(TransitionSystem ts, Unifier un, Term[] args) throws Exception {
         // execute the internal action
-        ts.getAg().getLogger().info("executing internal action 'mapping.get_base'");
-        Pair loc = Map.findPath(Map.getAgentLoc(ts.getAg()), new Pair(0,0));
+        ts.getAg().getLogger().info("executing internal action 'mapping.get_loc'");
+        System.out.println("e");
+        
+        Pair loc = Map.getAgentLoc(ts.getAg());
+
+        // everything ok, so returns true
         return un.unifies(new NumberTermImpl(loc.getX()), args[0]) && un.unifies(new NumberTermImpl(loc.getY()), args[1]);
     }
 }

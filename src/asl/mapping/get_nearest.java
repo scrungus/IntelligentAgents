@@ -12,15 +12,28 @@ public class get_nearest extends DefaultInternalAction {
     public Object execute(TransitionSystem ts, Unifier un, Term[] args) throws Exception {
         // execute the internal action
         ts.getAg().getLogger().info("executing internal action 'mapping.get_nearest'");
+        char t = 'b';
+        try {
+        	Atom s = ((Atom)args[0]);
+            if(s != null) {t = s.toString().charAt(0);}
+        }finally{}
         
-        MapEntry nearest = Map.getNearest(ts.getAg());
+
+        char rs = ((Atom)args[3]).toString().charAt(0);
+   
+        MapEntry nearest = Map.getNearest(ts.getAg(),rs);
         if(nearest.getContent() == 'n') {
-        	Pair loc = Map.getAgentLocation(ts.getAg());
-        	return un.unifies(new NumberTermImpl(-loc.getX()), args[0]) && un.unifies(new NumberTermImpl(-loc.getY()), args[1]);
+        	Pair loc = Map.getAgentLoc(ts.getAg());
+        	return un.unifies(new NumberTermImpl(-Map.getWidth()), args[1]) && un.unifies(new NumberTermImpl(-Map.getHeight()), args[2]);
+        }
+        else if (t == 'a') {
+        	ts.getAg().getLogger().info("returning absolute");
+        	return un.unifies(new NumberTermImpl(nearest.getLoc().getX()), args[1]) && un.unifies(new NumberTermImpl(nearest.getLoc().getY()), args[2]);
         }
         else {
-        	Pair path = Map.findPath(Map.getAgentLocation(ts.getAg()), nearest.getLoc());
-        	return un.unifies(new NumberTermImpl(path.getX()), args[0]) && un.unifies(new NumberTermImpl(path.getY()), args[1]);
+        	ts.getAg().getLogger().info("returning relative");
+        	Pair path = Map.findPath(Map.getAgentLoc(ts.getAg()), nearest.getLoc());
+        	return un.unifies(new NumberTermImpl(path.getX()), args[1]) && un.unifies(new NumberTermImpl(path.getY()), args[2]);
         }
         
     }

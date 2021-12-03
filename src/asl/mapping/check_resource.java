@@ -13,9 +13,9 @@ public class check_resource extends DefaultInternalAction {
         // execute the internal action
         ts.getAg().getLogger().info("executing internal action 'mapping.check_resource'");
         
-        Pair t = Map.getAgentLocation(ts.getAg());
+        Pair t = Map.getAgentLoc(ts.getAg());
         ts.getAg().getLogger().info(" at location : ("+t.getX()+","+t.getY()+")");
-        int q = Map.checkResource(Map.getAgentLocation(ts.getAg()));
+        int q = Map.checkResource(Map.getAgentLoc(ts.getAg()));
         ts.getAg().getLogger().info("check_resource : q: "+q);
         return un.unifies(new NumberTermImpl(q), args[0]);
     }

@@ -1,30 +1,26 @@
-// Agent scen2_bot in project ia_submission
+//collector
 /* Initial beliefs and rules */	
 /* Initial goals */
-
 !init.
 
 +!init : true
- <- +init;
+	<-+init;
  	mapping.agent_init;
- 	-init;
- 	rover.ia.get_map_size(Width, Height);
- 	mapping.map_init(Width, Height);
- 	!explore
- 	.
- 	
+ 	-init;.
+
 -!init : init
 	<- -init;
 	!init.
-
+	
 /* Plans */
 +! explore : true
-   <- mapping.get_nearest(XDist,YDist);
-      .print("explore: nearest : ",XDist," ",YDist);
-   	  mapping.get_base(XDist1,YDist1);
-   	  .print("explore: base : ",XDist1," ",YDist1);
-      if(XDist \== XDist1 & YDist \== YDist1){
-      	.print("going to resource ",XDist," ",YDist);
+   <- rover.ia.check_config(Capacity,Scanrange,Resourcetype);   
+   		mapping.get_nearest(XDist,YDist,Resourcetype);
+   		.print("going to (",XDist,",",YDist,")");
+   		rover.ia.get_map_size(Width, Height);
+   		if(XDist \== -Width & YDist \== -Height){
+   			.fail;
+   		}
       	+exploring;
       	move(XDist,YDist);
       	mapping.log(XDist,YDist);
@@ -32,36 +28,10 @@
       	+pickup;
       	!pickup;
       	-pickup;
-      	!explore;
-      }
-   	  elif(explore0){
-   	  	-explore0;
-   	  	.print("randomly exploring 1");
-   	  	+exploring;
-   	  	+explore1;
-   	  	move(2,1);
-   	  	mapping.log(2,1);
-   	  	-exploring
-      	scan(3);
-      	!explore;
-   	  }
-   	  else{
-   	  	if(explore1){
-   	  		-explore1;
-   	  	}
-   	  	+explore0;
-   	  	.print("randomly exploring 2");
-   	  	+exploring;
-   	  	move(1,2);
-   	  	mapping.log(1,2);
-   	  	-exploring
-      	scan(3);
-      	!explore;
-   	  }.
+      	!explore;.
 
 -! explore: true
-	<- .print("explore failed");
-		!explore.
+	<- .print("finished");.
 	 
 +! pickup : true
 	<- rover.ia.check_config(Capacity,Scanrange,Resourcetype);
@@ -117,11 +87,6 @@
 -!dropoff1(Qty,Capacity) : true 
 	<- !dropoff1(Qty,Capacity).
    
-
-+ resource_found(RsType, Qty, XDist, YDist) : true
-	<-	.print("RESOURCE FOUND");
-	mapping.new_resource(XDist,YDist,"g",Qty);
-    .
     
 +! deposit0(Qty) : true
   <- .print("depositing.")
@@ -137,6 +102,9 @@
 	<- -obstructed(Xt,Yt,Xl,Yl)[source(percept)];
 		.wait(1000);
       	.
+      	
++done [source(scanner)]: true
+	<-!explore.
       	
 +obstructed(Xt,Yt,Xl,Yl) : exploring
 	<- .print("explore failed");

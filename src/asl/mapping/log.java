@@ -19,11 +19,11 @@ public class log extends DefaultInternalAction {
         int x = (int)((NumberTerm)args[0]).solve();
         int y = (int)((NumberTerm)args[1]).solve();
         Map.newAgentLocation(x,y,ts.getAg());
-        Pair loc = Map.getAgentLocation(ts.getAg());
+        Pair loc = Map.getAgentLoc(ts.getAg());
         //Map.newEntry(loc.getX(), loc.getY(), 'b');
         ts.getAg().getLogger().info("logged agent location : ("+loc.getX()+","+loc.getY()+")");
         ts.getAg().getLogger().info("Agent Locations : ");
-        List<Pair> locs = Map.getAgentLocations();
+        List<Pair> locs = Map.getAgentLocs();
         for (Pair l : locs) {
         	ts.getAg().getLogger().info("("+l.getX()+","+l.getY()+")");
         }

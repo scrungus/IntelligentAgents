@@ -15,13 +15,13 @@ public class new_resource extends DefaultInternalAction {
         // execute the internal action
         ts.getAg().getLogger().info("executing internal action 'mapping.new_resource'");
         
-        int xdist = (int)((NumberTerm)args[0]).solve();
-        int ydist = (int)((NumberTerm)args[1]).solve();
+        int x = (int)((NumberTerm)args[0]).solve();
+        int y = (int)((NumberTerm)args[1]).solve();
         char s = ((StringTerm)args[2]).getString().charAt(0);
         int q = (int)((NumberTerm)args[3]).solve();
         
-        Pair ag = Map.getAgentLocation(ts.getAg());
-        Map.newEntry(ag.getX()+xdist,ag.getY()+ydist,s,q);
+        //Pair ag = Map.getAgentLoc(ts.getAg());
+        int e = Map.newEntry(x,y,s,q);
         
         ts.getAg().getLogger().info("List of Resources : ");
         List<MapEntry> resources = Map.getResources();
@@ -29,6 +29,6 @@ public class new_resource extends DefaultInternalAction {
         for (MapEntry r : resources) {
         	ts.getAg().getLogger().info(r.getContent()+" "+", loc ("+r.getLoc().getX()+","+r.getLoc().getY()+"), Qty:"+r.getQty());
         }
-        return true;
+        return un.unifies(new NumberTermImpl(e), args[4]);
     }
 }
