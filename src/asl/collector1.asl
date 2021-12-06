@@ -24,8 +24,14 @@ carrying(0).
 	move(PX,PY);
 	mapping.log(PX,PY);
 	-collecting;
+	.print("finished moving to resource");
 	!pickup;
 	.
+@collect(X,Y)[priority(1)]
+-! collect(X,Y) : true
+	<- .print("collect failed, trying again");
+		!collect(X,Y);
+		.
 	 
 +! pickup : true
 	<- rover.ia.check_config(Capacity,Scanrange,Resourcetype);
@@ -55,6 +61,7 @@ carrying(0).
       	.print("finished");
 	.
 
+@dropoff0(Qty)[priority(1)]
 -!dropoff0(Qty) : true 
 	<- !dropoff0(Qty).  
     
@@ -63,35 +70,33 @@ carrying(0).
   for ( .range(I,1,Qty) ) {
       		deposit("gold");
       	}
+      -+carrying(0);
       .print("deposit success").
   
 -! deposit0(Qty) : true
 	<-.print("deposit failed");.
 
-+!wait : true
+@avoid(Xt,Yt,Xl,Yl)[atomic]
++!avoid(Xt,Yt,Xl,Yl) : true
 	<- -obstructed(Xt,Yt,Xl,Yl)[source(percept)];
-		.wait(1000);
+		mapping.resolve(Xt,Yt,Xl,Yl,X,Y);
+		for( .member(NX,X) ){
+			.member(NY,Y)
+			move(NX,NY);
+			mapping.log(NX,NY);
+		}
       	.
-      	
-+obstructed(Xt,Yt,Xl,Yl) : collecting
-	<- .print("collect failed");
-		-collecting;
-		mapping.log(Xt,Yt);
-		!collect(Xl,Yl);
-		.
 
-+obstructed(Xt,Yt,Xl,Yl) : dropoff0
-	<- .print("dropoff failed");
-		-dropoff0(Qty);
+@obstructed(Xt,Yt,Xl,Yl)[priority(5)]
++obstructed(Xt,Yt,Xl,Yl): true
+	<- .print("obstructed");
+		if(exploring){
+			-exploring;
+			+obs;
+			mapping.add_explore_point(Xt+Xl,Yt+Yl);
+		}
 		mapping.log(Xt,Yt);
-		!wait;
+		!avoid(Xt,Yt,Xl,Yl);
 		.
-	
-+obstructed(Xt,Yt,Xl,Yl) : dropoff1
-	<- .print("dropoff failed");
-		-dropoff1(Qty,Capacity); 
-		mapping.log(Xt,Yt);
-		!wait;
-		.			
 
 	

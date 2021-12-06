@@ -1,6 +1,8 @@
 //collector
+
 /* Initial beliefs and rules */	
 /* Initial goals */
+carrying(0).
 !init.
 
 +!init : true
@@ -14,24 +16,40 @@
 	
 /* Plans */
 
-+! collect(X,Y,RsType) : true
-	<- rover.ia.check_config(Capacity,Scanrange,Resourcetype);
-	if(RsType \== Resourcetype){
-		.fail;
-	}
-	+collecting(RsType);
-	move(X,Y);
-	mapping.log(X,Y);
-	-collecting(RsType);
++! collect(X,Y) : true
+	<- +collecting;
+	.print("collecting...")
+	mapping.get_path(X,Y,PX,PY);
+	.print("going via (",PX,",",PY,")");
+	move(PX,PY);
+	mapping.log(PX,PY);
+	-collecting;
+	.print("finished moving to resource");
 	!pickup;
 	.
+
+@collect(X,Y)[priority(1)]
+-! collect(X,Y) : true
+	<- .print("collect failed, trying again");
+		!collect(X,Y);
+		.
 	 
 +! pickup : true
 	<- rover.ia.check_config(Capacity,Scanrange,Resourcetype);
-	collect(ResourceType);
-	.send()
+	.print("picking up");
+	collect("diamond");
+	?carrying(Q);
+	-+carrying(Q+1);
+	if(Q+1 == Capacity){
+		.send(scanner2,tell,returning_to_base);
+		!dropoff0(Capacity);
+	}
+	else{
+	 .send(scanner2,tell,collected);	
+	}
 	.
 
+@dropoff0(Qty)[atomic]
 +!dropoff0(Qty) : true 
 	<- mapping.get_base(XD, YD);
       	.print("going to base : ",XD, " ",YD);
@@ -43,61 +61,43 @@
       	!deposit0(Qty);
       	.print("finished");
 	.
-
--!dropoff0(Qty) : true 
-	<- !dropoff0(Qty).
 	
-+!dropoff1(Qty,Capacity) : true 
-	<- mapping.get_base(XD, YD);
-      	.print("going to base : ",XD, " ",YD);
-      	+dropoff1;
-      	move(XD,YD);
-      	mapping.log(XD,YD);
-      	-dropoff1;
-      	!deposit0(Capacity);
-      	.print("finished");.
- 
--!dropoff1(Qty,Capacity) : true 
-	<- !dropoff1(Qty,Capacity).
-   
+@dropoff0(Qty)[priority(1)]
+-!dropoff0(Qty) : true 
+	<- !dropoff0(Qty).  
     
 +! deposit0(Qty) : true
   <- .print("depositing.")
   for ( .range(I,1,Qty) ) {
-      		deposit("gold");
+      		deposit("diamond");
       	}
+      -+carrying(0);
       .print("deposit success").
   
 -! deposit0(Qty) : true
 	<-.print("deposit failed");.
 
-+!wait : true
+@avoid(Xt,Yt,Xl,Yl)[atomic]
++!avoid(Xt,Yt,Xl,Yl) : true
 	<- -obstructed(Xt,Yt,Xl,Yl)[source(percept)];
-		.wait(1000);
+		mapping.resolve(Xt,Yt,Xl,Yl,X,Y);
+		for( .member(NX,X) ){
+			.member(NY,Y)
+			move(NX,NY);
+			mapping.log(NX,NY);
+		}
       	.
-      	
-+done [source(scanner)]: true
-	<-!explore.
-      	
-+obstructed(Xt,Yt,Xl,Yl) : collecting(RsType)
-	<- .print("collect failed");
-		-collecting(RsType);
-		mapping.log(Xt,Yt);
-		!collect(Xl,Yl,RsType);
-		.
 
-+obstructed(Xt,Yt,Xl,Yl) : dropoff0
-	<- .print("dropoff failed");
-		-dropoff0(Qty);
+@obstructed(Xt,Yt,Xl,Yl)[priority(5)]
++obstructed(Xt,Yt,Xl,Yl): true
+	<- .print("obstructed");
+		if(exploring){
+			-exploring;
+			+obs;
+			mapping.add_explore_point(Xt+Xl,Yt+Yl);
+		}
 		mapping.log(Xt,Yt);
-		!wait;
+		!avoid(Xt,Yt,Xl,Yl);
 		.
-	
-+obstructed(Xt,Yt,Xl,Yl) : dropoff1
-	<- .print("dropoff failed");
-		-dropoff1(Qty,Capacity); 
-		mapping.log(Xt,Yt);
-		!wait;
-		.			
 
 	

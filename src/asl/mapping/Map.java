@@ -18,7 +18,8 @@ public class Map {
 	
 	private static List<MapEntry> map = new ArrayList<MapEntry>();
 	
-	private static List<Pair> explore_points = new ArrayList<Pair>();
+	private static List<Pair> eps = new ArrayList<Pair>();
+	private static List<Pair> explore_points = Collections.synchronizedList(eps);
 	
 	private static List<Agent> agents = new ArrayList<Agent>();
 	private static List<Pair> agent_loc = new ArrayList<Pair>();
@@ -233,5 +234,67 @@ public class Map {
 	
 	public static List<Pair> getAgentLocs(){
 		return agent_loc;
+	}
+	
+	public static List<Pair> resolve(int Xt, int Yt, int Xl, int Yl){
+		
+		List<Pair> moves = new ArrayList<Pair>();
+		
+		Pair m1, m2;
+		m1 = new Pair(0,0);
+		m2 = new Pair(0,0);
+		//obstructed north east
+		if(Xt >= 0 && Yt >= 0 && Xl >= 1 && Yl >=1) {
+			System.out.println("Going NE");
+			m1 = new Pair(0,-1);
+			m2 = new Pair(1,-1);
+		}
+		//obstructed south west
+		else if(Xt <= 0 && Yt <= 0 && Xl <= -1 && Yl <= -1) {
+			System.out.println("Going SW");
+			m1 = new Pair(0,1);
+			m2 = new Pair(-1,1);
+		}
+		//obstructed north west
+		else if(Xt <= 0 && Yt >= 0 && Xl <= -1 && Yl >= 1) {
+			System.out.println("Going NW");
+			m1 = new Pair(-1,0);
+			m2 = new Pair(-1,-1);		
+		}
+		//obstructed south east
+		else if(Xt >= 0 && Yt <= 0 && Xl >= 1 && Yl <= -1) {
+			System.out.println("Going SE");
+			m1 = new Pair(1,0);
+			m2 = new Pair(1,1);
+		}
+		//obstructed east
+		else if(Xl > 0 && Yl ==0) {
+			System.out.println("Going E");
+			m1 = new Pair(1,1);
+			m2 = new Pair(1,-1);
+		}
+		//obstructed west
+		else if(Xl < 0 && Yl ==0) {
+			System.out.println("Going W");
+			m1 = new Pair(-1,-1);
+			m2 = new Pair(-1,1);
+		}
+		//obstructed north
+		else if(Xl == 0 && Yl >0) {
+			System.out.println("Going N");
+			m1 = new Pair(1,-1);
+			m2 = new Pair(-1,-1);
+		}
+		//obstructed south
+		else if(Xl == 0 && Yl < 0) {
+			System.out.println("Going S");
+			m1 = new Pair(-1,1);
+			m2 = new Pair(1,1);
+		}
+		
+		moves.add(m1);
+		moves.add(m2);
+		
+		return moves;	
 	}
 }

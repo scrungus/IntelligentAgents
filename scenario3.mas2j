@@ -60,9 +60,9 @@ MAS ia_submission {
 		*/
 	
 		scanner1 [ capacity =0, scan_range=6, group=1, resource_type="Gold", mindinspector="gui(cycle,html,history)"];
-		//scanner2 [ capacity =0, scan_range=6, group=2, resource_type="Diamond", mindinspector="gui(cycle,html,history)"];
+		scanner2 [ capacity =0, scan_range=6, group=2, resource_type="Diamond", mindinspector="gui(cycle,html,history)"];
 		collector1 [ capacity =6, scan_range=0, group=1,resource_type="Gold", mindinspector="gui(cycle,html,history)"];
-		//collector2 [ capacity =6, scan_range=0, group=2,resource_type="Diamond", mindinspector="gui(cycle,html,history)"];
+		collector2 [ capacity =6, scan_range=0, group=2,resource_type="Diamond", mindinspector="gui(cycle,html,history)"];
 		
 		
 	aslSourcePath:

@@ -24,7 +24,7 @@ public class get_nearest extends DefaultInternalAction {
         MapEntry nearest = Map.getNearest(ts.getAg(),rs);
         if(nearest.getContent() == 'n') {
         	Pair loc = Map.getAgentLoc(ts.getAg());
-        	return un.unifies(new NumberTermImpl(-Map.getWidth()), args[1]) && un.unifies(new NumberTermImpl(-Map.getHeight()), args[2]);
+        	return un.unifies(new NumberTermImpl(Map.getWidth()+1), args[1]) && un.unifies(new NumberTermImpl(Map.getHeight()+1), args[2]);
         }
         else if (t == 'a') {
         	ts.getAg().getLogger().info("returning absolute");

@@ -16,6 +16,7 @@ public class get_next_location extends DefaultInternalAction {
         ts.getAg().getLogger().info("executing internal action 'mapping.get_next_location'");
         
         Pair nearest = Map.getNextExplorePoint(ts.getAg());
+        ts.getAg().getLogger().info("Agent given location ("+nearest.getX()+","+nearest.getY()+")");
         Pair agent = Map.getAgentLoc(ts.getAg());
         Pair path = Map.findPath(agent, nearest);
 

@@ -22,18 +22,13 @@ moving(0).
 /* Plans */
 +! explore : true
    <- .print("exploring");
-   ?waitingrs(Q);
-   if(Q > 0){
-   		mapping.get_nearest('r',XN,YN,'G');
-   		rover.ia.get_map_size(Width, Height);
-   		if(XN \== -Width & YN \== -Height){
-   			-exploring;
-			.print("waiting at resource, taking path (",XN,",",YN,")");
-			!wait_at_resource(XN,YN);
-			?waitingrs(Q);
-			-+waitingrs(Q-1);
-			.fail;
-		}
+   mapping.get_nearest('r',XN,YN,'G');
+   rover.ia.get_map_size(Width, Height);
+   if((XN \== Width & YN \== Height)){
+		-exploring;
+		.print("waiting at resource, taking path (",XN,",",YN,")");
+		!wait_at_resource(XN,YN);	
+		.fail;
    } 
    mapping.get_next_location(X,Y);
    +exploring
@@ -50,6 +45,12 @@ moving(0).
 
 -! explore: true
 	<- .print("waiting").
+
+@explore[priority(1)]
+-! explore: obs
+	<- .print("obstructed during explore, resuming");
+	-obs; 
+	!explore.
 		
 +! wait_at_resource (XDist, YDist): true
 	<-.print("executing wait_at_resource");
@@ -63,6 +64,12 @@ moving(0).
 	.send(collector1,achieve,collect(X,Y));
 	.
 
+@wait_at_resource(XDist, YDist)[priority(1)]
+-! wait_at_resource(XDist, YDist): true
+	<-	.print("obstructed during wait_at_resource, resuming");
+		mapping.get_nearest('r',XN,YN,'G');
+		!wait_at_resource(XN,YN);.
+		
 + collected[source(collector1)]: true
 	<- .print("received signal from collector"); 
 		scan(1);
@@ -94,7 +101,7 @@ moving(0).
 		mapping.update_resource_atx(X,Y,0);
 		mapping.get_nearest('r',XN,YN,'G');
 		rover.ia.get_map_size(Width, Height);
-		if(XN \== -Width & YN \== -Height){
+		if(XN == Width & YN == Height){
 			!explore;
 		}
 		else{
@@ -132,23 +139,27 @@ moving(0).
 	}
 	.
 
-+!wait : true
+@avoid(Xt,Yt,Xl,Yl)[atomic]
++!avoid(Xt,Yt,Xl,Yl) : true
 	<- -obstructed(Xt,Yt,Xl,Yl)[source(percept)];
-		.wait(1000);
+		mapping.resolve(Xt,Yt,Xl,Yl,X,Y);
+		for( .member(NX,X) ){
+			.member(NY,Y)
+			move(NX,NY);
+			mapping.log(NX,NY);
+		}
       	.
-      	
-+obstructed(Xt,Yt,Xl,Yl) : exploring
-	<- .print("explore failed");
-		-exploring;
+
+@obstructed(Xt,Yt,Xl,Yl)[priority(5)]
++obstructed(Xt,Yt,Xl,Yl): true
+	<- .print("obstructed");
+		if(exploring){
+			-exploring;
+			+obs;
+			mapping.add_explore_point(Xt+Xl,Yt+Yl);
+		}
 		mapping.log(Xt,Yt);
-		mapping.add_explore_point(Xt+Xl,Yt+Yl);
-		!wait.
-		
-@obstructed[atomic]
-+obstructed(Xt,Yt,Xl,Yl) : waitingrs(Q)
-	<- .print("going to resource failed");
-		-waitingrs;
-		mapping.log(Xt,Yt);
-		!wait_at_resource(Xl+1,Yl);.
+		!avoid(Xt,Yt,Xl,Yl);
+		.
 
 	
